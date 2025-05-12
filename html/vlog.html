@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Видеообзоры приманок</title>
+    <style>
+        /* Основные стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: sans-serif;
+            color: #000;
+            background: linear-gradient(to right, white, #00BFFF);
+            min-height: 100vh;
+        }
+
+        /* Шапка */
+        .header {
+            background-color: #000;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            width: 100px;
+        }
+
+        /* Навигация */
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-button {
+            background-color: #000;
+            color: white;
+            padding: 10px 25px;
+            font-size: 1.2em;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-button:hover {
+            background-color: #fff;
+            color: #000;
+            border: 2px solid #007BFF;
+        }
+
+        /* Выпадающее меню */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .dropdown-content a {
+            color: black;
+            text-decoration: none;
+            display: block;
+            padding: 12px 16px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        /* Открытие меню при наведении или клике */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Для мобильных устройств */
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+
+        /* Футер */
+        .footer {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+ /* Стили для видеоконтейнера */
+.video-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px; /* Увеличенный интервал между видео */
+    padding: 60px 20px;
+    justify-content: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Контейнер для вертикального видео */
+.video-wrapper {
+    position: relative;
+    width: 250px; /* Увеличено */
+    height: 444px; /* Сохранено соотношение 9:16 (250 * 16 / 9 ≈ 444) */
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+}
+
+.video-wrapper:hover {
+    transform: scale(1.02);
+}
+
+.video-wrapper iframe,
+.video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: none;
+}
+
+/* Адаптация для планшетов */
+@media (max-width: 1024px) {
+    .video-container {
+        gap: 30px;
+        padding: 50px 15px;
+    }
+
+    .video-wrapper {
+        width: 220px;
+        height: 391px; /* 220 * 16 / 9 */
+    }
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+    .video-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 10px;
+    }
+
+    .video-wrapper {
+        width: 80vw; /* 80% от ширины экрана */
+        height: calc(80vw * 16 / 9); /* Сохранение соотношения 9:16 */
+        margin: 15px 0;
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 480px) {
+    .video-wrapper {
+        width: 90vw;
+        height: calc(90vw * 16 / 9);
+    }
+}
+/* Блок с текстом и изображением */
+.text-image-section {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.text-image-block {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+    position: relative;
+    width: 100%;
+}
+
+.text-image-block img {
+    max-width: 400px;
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    margin-bottom: 15px;
+}
+
+.text-image-block .text-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.text-image-block.reverse img {
+    float: right;
+    margin-left: 20px;
+    margin-bottom: 15px;
+    clear: both;
+}
+
+.text-image-block:not(.reverse) img {
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 15px;
+    clear: both;
+}
+
+.text-image-block h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #000;
+}
+
+.text-image-block p {
+    line-height: 1.6;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+    .text-image-block.reverse img,
+    .text-image-block img {
+        float: none;
+        margin: 0 0 15px 0;
+        width: 100%;
+    }
+
+    .text-image-block .text-content {
+        width: 100%;
+    }
+}
+
+        /* Кнопка "Наверх" */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 1.5em;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="header">
+        <h1>Видеообзоры приманок</h1>
+        <div class="nav">
+            <img src="../курсач/воблера/логотип.jpg" alt="Логотип" class="logo">
+            <div class="dropdown">
+                <button class="dropdown-button" id="menuButton">Меню</button>
+                <div class="dropdown-content" id="menuContent">
+                    <a href="main.html">Главная</a>
+                    <a href="map.html">Места ловли</a>
+                    <a href="vlog.html">Блог</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+   <!-- Видеообзоры -->
+<section class="video-container">
+    <div class="video-wrapper">
+        <iframe src="../видосы/VID_54841226_191013_893.mp4" allowfullscreen></iframe>
+    </div>
+    <div class="video-wrapper">
+        <iframe src="../видосы/VID_36270530_231741_051.mp4" allowfullscreen></iframe>
+    </div>
+    <div class="video-wrapper">
+        <iframe src="../видосы/VID_395200207_201418_096.mp4" allowfullscreen></iframe>
+    </div>
+</section>
+
+<!-- Текст с изображениями -->
+<section class="text-image-section">
+    <!-- Текст слева, фото справа -->
+    <div class="text-image-block reverse">
+        <img src="../курсач/воблера/блесна1.jpg" alt="Блесна">
+        <div class="text-content">
+            <h2>Как выбрать блесну для спиннинга</h2>
+            <p>При выборе блесны важно учитывать несколько факторов: цвет, вес, форму и материал. Цвет блесны зависит от условий ловли – в мутной воде лучше работают яркие цвета, а в прозрачной – натуральные оттенки.</p>
+            <p>Вес приманки определяет глубину проводки и расстояние заброса. Форма влияет на игру блесны в воде, а материал (медь, латунь, нержавейка) отвечает за долговечность и эффективность.</p>
+            <p>Рекомендуется выбирать блесны с тройными крючками для лучшего зацепа рыбы. Также стоит обратить внимание на баланс — равномерное распределение веса обеспечивает стабильную игру в воде.</p>
+        </div>
+    </div>
+
+    <!-- Текст справа, фото слева -->
+    <div class="text-image-block">
+        <img src="../курсач/воблера/popper4.jpg" alt="Поппер">
+        <div class="text-content">
+            <h2>Техника ловли на попперы</h2>
+            <p>Попперы – это поверхностные приманки, имитирующие раненую рыбку. Их основная задача – создавать всплески на поверхности воды, привлекая хищника.</p>
+            <p>Эффективная проводка включает рывки удилищем с паузами, когда поппер "отдыхает" на поверхности. Хорошо работает резкая подсечка при атаке хищника.</p>
+            <p>Рекомендуется использовать попперы на открытых водоемах с минимальным течением, где хорошо видна игра приманки. Лучше всего подходят тихие утренние часы с минимальным ветром.</p>
+            <p>Для улучшения эффективности можно добавлять короткие резкие движения, имитирующие панику рыбки. Также стоит экспериментировать с длительностью пауз между рывками.</p>
+        </div>
+    </div>
+</section>
+    <!-- Футер -->
+    <footer class="footer">
+        <p>© 2025 — Лицензия на использование сайта</p>
+        <p>Gmail: nikolajpinchuk091@gmail.com | Тел.: +375 (29) 558-45-78</p>
+    </footer>
+
+    <!-- Кнопка "Наверх" -->
+    <button class="back-to-top" id="backToTop">↑</button>
+
+    <script>
+        // Рабочее меню
+        const menuButton = document.getElementById('menuButton');
+        const menuContent = document.getElementById('menuContent');
+        
+        // Переключение меню при клике
+        menuButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Предотвращаем всплытие события
+            menuContent.parentElement.classList.toggle('active');
+        });
+
+        // Закрытие меню при клике вне его
+        document.addEventListener('click', (e) => {
+            if (!menuContent.contains(e.target) && !menuButton.contains(e.target)) {
+                menuContent.parentElement.classList.remove('active');
+            }
+        });
+
+        // Кнопка "Наверх"
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('show', window.scrollY > 300);
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

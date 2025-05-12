@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог приманок для спиннинга</title>
+<link rel="icon" type="image" href="../курсач/воблера/логотип.jpg">
+    <style>
+        /* Основные стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            color: #000;
+            background: linear-gradient(to right, white, #00BFFF);
+            min-height: 100vh;
+        }
+
+        /* Шапка */
+        .header {
+            background-color: #000;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            width: 100px;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-button {
+            background-color: #000;
+            color: white;
+            padding: 10px 25px;
+            font-size: 1.2em;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-button:hover {
+            background-color: #fff;
+            color: #000;
+            border: 2px solid #007BFF;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            text-decoration: none;
+            display: block;
+            padding: 12px 16px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Контейнер товаров */
+        .category-container {
+            padding: 20px;
+        }
+
+        .category-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+            color: #000;
+        }
+
+        .category-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .category-button {
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            text-align: center;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .slider {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .category-button span {
+            padding: 10px;
+            font-weight: bold;
+            color: #000;
+            word-wrap: break-word;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* Футер */
+        .footer {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        /* Кнопка "Наверх" */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 1.5em;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* Выпадающее меню Get in touch */
+        .filter-dropdown {
+            position: relative;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .button {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 30px;
+            color: black;
+            font-size: 1.2em;
+            cursor: pointer;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .hoverEffect {
+            position: absolute;
+            bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hoverEffect div {
+            background: linear-gradient(
+        90deg,
+        rgb(221, 255, 0) 0%,
+        rgb(0, 255, 242) 49%,
+        rgb(7, 30, 177) 100%
+    );
+            border-radius: 40rem;
+            width: 10rem;
+            height: 10rem;
+            transition: all 0.4s ease;
+            filter: blur(20px);
+            animation: effect infinite 3s linear;
+            opacity: 0.5;
+        }
+        /* Стили для модального окна */
+        .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content img {
+    max-width: 90vw;
+    max-height: 80vh;
+    border-radius: 10px;
+}
+
+.modal-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2em;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 2;
+}
+
+.prev {
+    left: -50px;
+}
+
+.next {
+    right: -50px;
+}
+
+.close {
+    position: absolute;
+    top: -40px;
+    left: -40px;
+    font-size: 2em;
+    color: white;
+    cursor: pointer;
+    background: #000;
+    border-radius: 50%;
+    padding: 5px 12px;
+}
+        @keyframes effect {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .button:hover .hoverEffect div {
+            width: 8rem;
+            height: 8rem;
+        }
+
+        /* Рекламный блок */
+        .advertising {
+            max-width: 800px;
+            margin: 40px auto;
+            text-align: center;
+            padding: 20px;
+            color: #000;
+        }
+
+        .advertising h2 {
+            margin-bottom: 10px;
+        }
+
+        .advertising ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .advertising li {
+            margin: 10px 0;
+        }
+        @media (max-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .slider {
+                height: 185px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav {
+                margin-top: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+                padding: 0 10px;
+            }
+
+            .slider {
+                height: 185px;
+                width: 230px;
+            }
+
+            .dropdown-button, .filter-btn {
+                font-size: 1.2em;
+                padding: 6px 12px;
+            }
+
+            .footer {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <h1>Каталог приманок</h1>
+        <div class="nav">
+            <img src="../курсач/воблера/логотип.jpg" alt="Логотип" class="logo">
+            <div class="dropdown">
+                <button class="dropdown-button">Меню</button>
+                <div class="dropdown-content">
+                    <a href="main.html">Главная</a>
+                    <a href="map.html">Места ловли</a>
+                    <a href="vlog.html">Блог</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <main class="category-container">
+        <h2 class="category-title">Приманки</h2>
+        <div class="category-buttons" id="productGrid">
+
+            <!-- Воблеры -->
+            <div class="category-button" data-category="woblers">
+                <div class="slider">
+                    <div class="slides">
+                        <img src="../курсач/воблера/i.webp" alt="Воблер 1" class="slide">
+                        <img src="../курсач/воблера/202404.750x0.jpg" alt="Воблер 2" class="slide">
+                        <img src="../курсач/воблера/maxresdefault.jpg" alt="Воблер 3" class="slide">
+                    </div>
+                </div>
+                <span><a href="vobler.html">Воблеры</a></span>
+            </div>
+
+            <!-- Блёсны -->
+            <div class="category-button" data-category="spoons">
+                <div class="slider">
+                    <div class="slides">
+                        <img src="../курсач/воблера/блесна1.jpg" alt="Блесна 1" class="slide">
+                        <img src="../курсач/воблера/блесна6.jpg" alt="Блесна 2" class="slide">
+                        <img src="../курсач/воблера/блесна9.jpg.crdownload" alt="Блесна 3" class="slide">
+                    </div>
+                </div>
+                <span><a href="blesnu.html">Блёсны</a></span>
+            </div>
+
+            <!-- Попперы -->
+            <div class="category-button" data-category="poppers">
+                <div class="slider">
+                    <div class="slides">
+                        <img src="../курсач/воблера/popper2.jpg" alt="Поппер 1" class="slide">
+                        <img src="../курсач/воблера/popper6.jpg" alt="Поппер 2" class="slide">
+                        <img src="../курсач/воблера/popper4.jpg" alt="Поппер 3" class="slide">
+                    </div>
+                </div>
+                <span><a href="popper.html">Попперы</a></span>
+            </div>
+
+            <!-- Силиконовые приманки -->
+            <div class="category-button" data-category="softbaits">
+                <div class="slider">
+                    <div class="slides">
+                        <img src="../курсач/воблера/silicon10.jpeg" alt="Силикон 1" class="slide">
+                        <img src="../курсач/воблера/silicon9.jpg" alt="Силикон 2" class="slide">
+                        <img src="../курсач/воблера/silicon8.jpg" alt="Силикон 3" class="slide">
+                    </div>
+                </div>
+                <span><a href="silicon.html">Силиконовые приманки</a></span>
+            </div>
+
+            <!-- Тейлспиннеры -->
+            <div class="category-button" data-category="tailspinners">
+                <div class="slider">
+                    <div class="slides">
+                        <img src="../курсач/воблера/tail7.jpg" alt="Тейлспиннер 1" class="slide">
+                        <img src="../курсач/воблера/tail8.webp" alt="Тейлспиннер 2" class="slide">
+                        <img src="../курсач/воблера/tail9.jpg" alt="Тейлспиннер 3" class="slide">
+                    </div>
+                </div>
+                <span><a href="tailspinner.html">Тейлспиннеры</a></span>
+            </div>
+
+            <!-- Вертушки -->
+            <div class="category-button" data-category="spinners">
+                <div class="slider">
+                    <div class="slides">
+                        <img src="../курсач/воблера/vert8.jpeg" alt="Вертушка 1" class="slide">
+                        <img src="../курсач/воблера/vert7.webp" alt="Вертушка 2" class="slide">
+                        <img src="../курсач/воблера/vert9.webp" alt="Вертушка 3" class="slide">
+                    </div>
+                </div>
+                <span><a href="vertushki.html">Вертушки</a></span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Рекламный блок с кнопкой Get in touch -->
+    <section class="advertising">
+        <h2>Готовьтесь к трофею!</h2>
+        <p>📌 Широкий выбор :</p>
+
+            <p>Воблеры для хищника</p>
+            <p> Попперы для поверхностной игры</p>
+            <p>Силикон и джеркбейты для активной проводки</p>
+            <p>📌 Удобство :</p>
+            <p>Каталог работает на любом устройстве — с телефона в дороге или с компьютера дома.</p>
+            
+            <p>📌 Экспертная помощь :</p>
+            <p>Не знаете, с чего начать? Свяжитесь с нами — мы подскажем, какая приманка подойдет вашему стилю ловли.</p>
+        <p>Подпишитесь на нашу рассылку и получите:</p>
+        <ul style="list-style: none; padding: 0; margin: 20px 0;">
+            <li>✅ Эксклюзивные советы по выбору приманок</li>
+            <li>✅ Акции и скидки на популярные модели</li>
+            <li>✅ Бесплатный гид "Как ловить трофейную рыбу"</li>
+        </ul>
+        <div class="filter-dropdown">
+            <button class="button"><a href="https://t.me/+othx-QqJDJw3ODVi">Telegram</a>
+            <div class="hoverEffect">
+                <div></div>
+            </div>
+        </button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 — Лицензия на использование сайта</p>
+        <p>Gmail: nikolajpinchuk091@gmail.com | Тел.: +375 (29) 558-45-78</p>
+    </footer>
+
+    <!-- Кнопка "Наверх" -->
+    <button class="back-to-top" id="backToTop">↑</button>
+
+
+
+    <script>
+
+    // Слайдер + Модальное окно
+    document.querySelectorAll('.category-button').forEach(button => {
+        const slider = button.querySelector('.slides');
+        const slides = Array.from(slider.querySelectorAll('.slide'));
+
+        function nextSlide(index) {
+            return (index + 1) % slides.length;
+        }
+
+        let interval = setInterval(() => {
+            const currentIndex = parseInt(slider.dataset.index || '0');
+            slider.style.transform = `translateX(-${nextSlide(currentIndex) * 100}%)`;
+            slider.dataset.index = nextSlide(currentIndex);
+        }, 1500);
+
+        button.addEventListener('mouseenter', () => clearInterval(interval));
+        button.addEventListener('mouseleave', () => {
+            interval = setInterval(() => {
+                const currentIndex = parseInt(slider.dataset.index || '0');
+                slider.style.transform = `translateX(-${nextSlide(currentIndex) * 100}%)`;
+                slider.dataset.index = nextSlide(currentIndex);
+            }, 1500);
+        });
+
+        // Открытие модального окна с галереей
+        slides.forEach((img, index) => {
+            img.addEventListener('click', () => openModal(slides, index));
+        });
+    });
+
+    // Функция открытия модального окна с галереей
+    function openModal(images, startIndex) {
+        const modal = document.createElement('div');
+        modal.classList.add('modal');
+
+        const container = document.createElement('div');
+        container.classList.add('modal-content');
+
+        const img = document.createElement('img');
+        img.src = images[startIndex].src;
+        img.alt = images[startIndex].alt;
+
+        const prevBtn = document.createElement('button');
+        prevBtn.classList.add('modal-nav', 'prev');
+        prevBtn.innerHTML = '&#10094;';
+
+        const nextBtn = document.createElement('button');
+        nextBtn.classList.add('modal-nav', 'next');
+        nextBtn.innerHTML = '&#10095;';
+
+        const closeBtn = document.createElement('span');
+        closeBtn.classList.add('close');
+        closeBtn.innerHTML = '&times;';
+
+        container.appendChild(prevBtn);
+        container.appendChild(img);
+        container.appendChild(nextBtn);
+        container.appendChild(closeBtn);
+
+        modal.appendChild(container);
+        document.body.appendChild(modal);
+
+        let currentIndex = startIndex;
+
+        function updateImage() {
+            img.src = images[currentIndex].src;
+            img.alt = images[currentIndex].alt;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateImage();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % images.length;
+            updateImage();
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.remove();
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+
+        // Управление стрелками на клавиатуре
+        document.addEventListener('keydown', (e) => {
+            if (!document.body.contains(modal)) return;
+            if (e.key === 'ArrowLeft') {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                updateImage();
+            } else if (e.key === 'ArrowRight') {
+                currentIndex = (currentIndex + 1) % images.length;
+                updateImage();
+            } else if (e.key === 'Escape') {
+                modal.remove();
+            }
+        });
+    }
+
+    // Кнопка "Наверх"
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+        backToTop.classList.toggle('show', window.scrollY > 300);
+    });
+    backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    </script>
+</body>
+</html>
