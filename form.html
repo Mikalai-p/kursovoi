@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма обратной связи</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+    font-family: Arial, sans-serif;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-image: url("back.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Опциональный затемняющий слой */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            background: linear-gradient(to right, rgb(210, 238, 255), #00BFFF);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .contact-section {
+            text-align: center;
+        }
+
+        .contact-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+                padding: 15px;
+                
+            }
+
+            header h1 {
+                font-size: 1.2rem;
+            }
+
+            nav ul li {
+                margin-right: 5px;
+            }
+
+            input, textarea {
+                font-size: 0.9rem;
+            }
+
+            .submit-btn {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Связь</h1>
+        <nav>
+            <ul>
+                <li><a href="html/main.html">Главная</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="contact-section">
+        <form id="contact-form">
+            <div class="form-group">
+                <label for="name">Ваше имя:</label>
+                <input type="text" id="name" name="name" placeholder="Введите ваше имя" required>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail или телефон:</label>
+                <input type="text" id="email" name="email" placeholder="Введите email или телефон" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Сообщение:</label>
+                <textarea id="message" name="message" placeholder="Введите сообщение" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Отправить</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>Контакты:</p>
+        <p>E-MAIL: nikolajpincuk@gmail.com</p>
+        <p>Телефон: +375295584578</p>
+    </footer>
+</div>
+
+<script>
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Предотвращаем отправку по умолчанию
+
+        const name = document.getElementById('name').value.trim();
+        const emailOrPhone = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+
+        let isValid = true;
+
+        if (name === '') {
+            alert('Пожалуйста, введите ваше имя.');
+            isValid = false;
+        }
+
+        if (emailOrPhone === '') {
+            alert('Пожалуйста, введите email или телефон.');
+            isValid = false;
+        }
+
+        if (message === '') {
+            alert('Пожалуйста, введите сообщение.');
+            isValid = false;
+        }
+
+        // Пример дополнительной валидации для email/телефона:
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\+?[0-9\s\-()]{7,}$/;
+
+        if (!emailRegex.test(emailOrPhone) && !phoneRegex.test(emailOrPhone)) {
+            alert('Введите корректный email или телефон.');
+            isValid = false;
+        }
+
+        if (isValid) {
+            alert('Форма успешно отправлена!');
+            // Здесь можно реализовать AJAX-запрос для отправки данных на сервер
+            // Например:
+            // fetch('/send', { method: 'POST', body: JSON.stringify({ name, emailOrPhone, message }) });
+        }
+    });
+</script>
+
+</body>
+</html>

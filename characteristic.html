@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детальная страница воблера</title>
+    <link rel="icon" type="image" href="../курсач/воблера/логотип.jpg">
+    <style>
+        /* Основные стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: sans-serif;
+            color: #000;
+            background: linear-gradient(to right, white, #00BFFF);
+            min-height: 100vh;
+        }
+        
+        /* Шапка */
+        .header {
+            background-color: #000;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo {
+            width: 100px;
+        }
+        
+        /* Навигация */
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-button {
+            background-color: #000;
+            color: white;
+            padding: 10px 25px;
+            font-size: 1.2em;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .dropdown-button:hover {
+            background-color: #fff;
+            color: #000;
+            border: 2px solid #007BFF;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: black;
+            text-decoration: none;
+            display: block;
+            padding: 12px 16px;
+        }
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Подвал */
+        .footer {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        
+        /* Кнопка "Наверх" */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 1.5em;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* Стили для детальной страницы */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Блок с изображением и характеристиками */
+        .product-overview {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .image-container {
+            flex: 1 1 400px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .specs {
+            flex: 1 1 400px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+        
+        .spec-title {
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .spec-value {
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* Блок с описанием */
+        .description {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Навигационная ссылка */
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .image-container {
+            flex: 1 1 400px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            max-height: 180px;
+        }
+            .product-overview {
+                flex-direction: column;
+            }
+            
+            .spec-item {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+        /* Бургер-меню */
+.burger-menu {
+    display: none;
+}
+
+.burger-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    margin-left: 120px;
+    position: relative;
+    z-index: 1000;
+}
+
+.burger-icon {
+    width: 25px;
+    height: 3px;
+    background: white;
+    position: relative;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.burger-icon::before,
+.burger-icon::after {
+    content: '';
+    width: 25px;
+    height: 3px;
+    background: white;
+    position: absolute;
+    left: 0;
+    transition: all 0.3s ease;
+}
+
+.burger-icon::before {
+    top: -8px;
+}
+
+.burger-icon::after {
+    top: 8px;
+}
+
+/* Активный бургер */
+.burger-button.active .burger-icon {
+    background: transparent;
+}
+
+.burger-button.active .burger-icon::before {
+    transform: rotate(45deg);
+    top: 0;
+}
+
+.burger-button.active .burger-icon::after {
+    transform: rotate(-45deg);
+    top: 0;
+}
+
+/* Мобильное меню */
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    transition: left 0.3s ease;
+    z-index: 999;
+}
+
+.mobile-nav.active {
+    left: 0;
+}
+
+.mobile-nav-content {
+    padding: 60px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.close-btn {
+    align-self: flex-end;
+    font-size: 2em;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.mobile-menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.mobile-menu li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    transition: color 0.3s ease;
+}
+
+.mobile-menu li a:hover {
+    color: #00BFFF;
+}
+
+/* Отображение бургера на мобильных */
+@media (max-width: 768px) {
+    .burger-menu {
+        display: block;
+    }
+
+    .dropdown {
+        display: none;
+    }
+
+    .header {
+        justify-content: space-between;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <div class="header">
+        <h1>Воблер</h1>
+        <div class="nav">
+            <img src="../курсач/воблера/логотип.jpg" alt="Логотип" class="logo">
+            <div class="dropdown">
+                <button class="dropdown-button">Меню</button>
+                <div class="dropdown-content">
+                    <a href="main.html">Главная</a>
+                    <a href="map.html">Места ловли</a>
+                    <a href="vlog.html">Блог</a>
+                </div>
+            </div>
+             <!-- Бургер-меню -->
+<div class="burger-menu">
+    <button class="burger-button" aria-label="Открыть меню">
+        <span class="burger-icon"></span>
+    </button>
+    <nav class="mobile-nav">
+        <div class="mobile-nav-content">
+            <button class="close-btn" aria-label="Закрыть меню">×</button>
+            <ul class="mobile-menu">
+                <li><a href="main.html">Главная</a></li>
+                <li><a href="map.html">Места ловли</a></li>
+                <li><a href="vlog.html">Блог</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="container">
+        <a href="vobler.html" class="back-link">← Вернуться к каталогу</a>
+        
+        <!-- Блок с изображением и характеристиками -->
+        <div class="product-overview">
+            <!-- Изображение -->
+            <div class="image-container">
+                <img src="../курсач/воблера/i.webp" alt="Воблер Rapala Original">
+            </div>
+            
+            <!-- Характеристики -->
+            <div class="specs">
+                <div class="spec-item">
+                    <span class="spec-title">Тип</span>
+                    <span class="spec-value">Плавающий воблер</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-title">Размер</span>
+                    <span class="spec-value">5 см / 7 грамм</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-title">Цвет</span>
+                    <span class="spec-value">Чёрно-жёлтый (Chartreuse Black Back)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-title">Глубина работы</span>
+                    <span class="spec-value">0.5 - 1.2 метра</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-title">Материал</span>
+                    <span class="spec-value">Бальза</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-title">Крючки</span>
+                    <span class="spec-value">#6 тройники</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Описание внизу -->
+        <div class="description">
+            <h2>Rapala Original Floating</h2>
+            <p>Классический воблер Rapala Original Floating - одна из самых успешных приманок в истории спиннинговой ловли.</p>
+            <p>Обладает живой игрой даже при равномерной проводке, имитируя поведение раненой рыбки. Отлично работает на любых водоёмах для ловли окуня, щуки и судака.</p>
+            <p>Преимущества:</p>
+            <ul>
+                <li>Стабильная игра при любой скорости проводки</li>
+                <li>Высокая надежность крепления крючков</li>
+                <li>Универсальность в применении</li>
+                <li>Долговечность материала</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <footer class="footer">
+        <p>© 2025 — Лицензия на использование сайта</p>
+        <p>Gmail: nikolajpinchuk091@gmail.com | Тел.: +375 (29) 558-45-78</p>
+    </footer>
+
+    <!-- Кнопка "Наверх" -->
+    <button class="back-to-top" id="backToTop">↑</button>
+
+    <script>
+        // Копия скрипта для кнопки "Наверх"
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('show', window.scrollY > 300);
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        // Бургер-меню
+const burgerButton = document.querySelector('.burger-button');
+const mobileNav = document.querySelector('.mobile-nav');
+const closeBtn = document.querySelector('.close-btn');
+
+burgerButton.addEventListener('click', () => {
+    burgerButton.classList.toggle('active');
+    mobileNav.classList.toggle('active');
+});
+
+closeBtn.addEventListener('click', () => {
+    burgerButton.classList.remove('active');
+    mobileNav.classList.remove('active');
+});
+
+// Закрытие меню при клике на ссылку
+document.querySelectorAll('.mobile-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        burgerButton.classList.remove('active');
+        mobileNav.classList.remove('active');
+    });
+});
+
+    </script>
+</body>
+</html>

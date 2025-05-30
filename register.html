@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход и Регистрация</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url("fon.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .form-container {
+            width: 300px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .hidden {
+            display: none;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #fff;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .toggle-password {
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+        }
+        .toggle-password:hover {
+            color: #ff6b6b;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .checkbox-label input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .checkbox-label span {
+            color: #fff;
+        }
+        .checkbox-label a {
+            color: #ff6b6b;
+            text-decoration: underline;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        a{
+          text-decoration: none;
+          color: black;
+        }
+        button:hover {
+            background-color: #e74c3c;
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .social-links img {
+            width: 30px;
+            height: 30px;
+            margin: 0 5px;
+            filter: invert(1);
+        }
+        .switch-form {
+            text-align: center;
+            margin-top: 10px;
+            color: #fff;
+        }
+        .switch-form a {
+            color: #ff6b6b;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Форма входа -->
+    <div class="form-container">
+        <h2>Log In</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="login-username">Username:</label>
+                <input type="text" id="login-username" name="username" placeholder="Введите имя пользователя" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password:</label>
+                <input type="password" id="login-password" name="password" placeholder="Введите пароль" required>
+                <span class="toggle-password" onclick="togglePassword('login-password')"><i class="fas fa-eye"></i></span>
+            </div>
+          
+            <button type="submit"><a href="html/main.html">Log in</a></button>
+        </form>
+        <div class="switch-form">
+            Don't have an account? <a href="#" onclick="showSignUp()">Sign up</a>
+        </div>
+    </div>
+
+    <!-- Форма регистрации (скрыта по умолчанию) -->
+    <div class="form-container hidden">
+        <h2>Sign Up</h2>
+        <form id="signup-form">
+            <div class="form-group">
+                <label for="signup-first-name">First Name:</label>
+                <input type="text" id="signup-first-name" name="first-name" placeholder="Введите имя" required>
+            </div>
+            <div class="form-group">
+                <label for="signup-last-name">Last Name:</label>
+                <input type="text" id="signup-last-name" name="last-name" placeholder="Введите фамилию" required>
+            </div>
+            <div class="form-group">
+                <label for="signup-email">Email:</label>
+                <input type="email" id="signup-email" name="email" placeholder="Введите email" required>
+            </div>
+            <div class="form-group">
+                <label for="signup-password">Password:</label>
+                <input type="password" id="signup-password" name="password" placeholder="Введите пароль" required>
+                <span class="toggle-password" onclick="togglePassword('signup-password')"><i class="fas fa-eye"></i></span>
+            </div>
+            <div class="form-group">
+                <label for="signup-confirm-password">Confirm Password:</label>
+                <input type="password" id="signup-confirm-password" name="confirm-password" placeholder="Подтвердите пароль" required>
+                <span class="toggle-password" onclick="togglePassword('signup-confirm-password')"><i class="fas fa-eye"></i></span>
+            </div>
+            <div class="form-group checkbox-label">
+                <input type="checkbox" id="terms-checkbox">
+                <label for="terms-checkbox">I Agree with <a href="#">privacy</a> and <a href="#">policy</a></label>
+            </div>
+            <button type="submit"><a href="html/main.html">Sign up</a></button>
+        </form>
+        <div class="switch-form">
+            Already have an account? <a href="#" onclick="showLogin()">Sign in</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Функция для показа/скрытия форм
+    function showLogin() {
+        document.querySelectorAll('.form-container')[0].style.display = 'block';
+        document.querySelectorAll('.form-container')[1].style.display = 'none';
+    }
+
+    function showSignUp() {
+        document.querySelectorAll('.form-container')[0].style.display = 'none';
+        document.querySelectorAll('.form-container')[1].style.display = 'block';
+    }
+
+    // Функция для переключения видимости пароля
+    function togglePassword(inputId) {
+        const passwordInput = document.getElementById(inputId);
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+        } else {
+            passwordInput.type = 'password';
+        }
+    }
+
+    // Валидация формы входа
+    document.getElementById('login-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const username = document.getElementById('login-username').value.trim();
+        const password = document.getElementById('login-password').value.trim();
+
+        if (!username) {
+            alert('Пожалуйста, введите имя пользователя.');
+            return;
+        }
+        if (!password) {
+            alert('Пожалуйста, введите пароль.');
+            return;
+        }
+
+        alert('Форма входа успешно отправлена!');
+    });
+
+    // Валидация формы регистрации
+    document.getElementById('signup-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const firstName = document.getElementById('signup-first-name').value.trim();
+        const lastName = document.getElementById('signup-last-name').value.trim();
+        const email = document.getElementById('signup-email').value.trim();
+        const password = document.getElementById('signup-password').value.trim();
+        const confirmPassword = document.getElementById('signup-confirm-password').value.trim();
+        const termsCheckbox = document.getElementById('terms-checkbox').checked;
+
+        let isValid = true;
+
+        if (!firstName) {
+            alert('Пожалуйста, введите имя.');
+            isValid = false;
+        }
+        if (!lastName) {
+            alert('Пожалуйста, введите фамилию.');
+            isValid = false;
+        }
+        if (!email) {
+            alert('Пожалуйста, введите email.');
+            isValid = false;
+        } else {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Пожалуйста, введите корректный email.');
+                isValid = false;
+            }
+        }
+        if (!password) {
+            alert('Пожалуйста, введите пароль.');
+            isValid = false;
+        }
+        if (!confirmPassword) {
+            alert('Пожалуйста, подтвердите пароль.');
+            isValid = false;
+        } else if (password !== confirmPassword) {
+            alert('Пароли не совпадают.');
+            isValid = false;
+        }
+        if (!termsCheckbox) {
+            alert('Пожалуйста, примите условия политики конфиденциальности.');
+            isValid = false;
+        }
+
+        if (isValid) {
+            alert('Форма регистрации успешно отправлена!');
+        }
+    });
+</script>
+
+</body>
+</html>
